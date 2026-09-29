@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#050505" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Wallee" />
+
+  <title>Wallee Approval</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./Assets/icon-192.svg" />
+  <link rel="icon" href="./Assets/icon-192.svg" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+
+  <main id="app" class="app-shell" aria-live="polite">
+    <section id="homeView" class="view view-active">
+      <header class="hero">
+        <button id="brandButton" class="brand-mark" aria-label="Wallee home">
+          <span class="brand-shine"></span>
+          <img id="brandLogo" src="./Assets/selected-player-logo.svg" alt="Selected Player" />
+        </button>
+        <p class="brand-kicker">CONTENT APPROVAL</p>
+      </header>
+
+      <section class="home-actions">
+        <button id="newPostButton" class="home-card primary-card">
+          <span class="home-card-icon">＋</span>
+          <span class="home-card-copy">
+            <strong>New post</strong>
+            <small>Create preview</small>
+          </span>
+        </button>
+
+        <button id="pendingButton" class="home-card">
+          <span class="home-card-icon icon-pending">◌</span>
+          <span class="home-card-copy">
+            <strong>Pending</strong>
+            <small>Waiting for approval</small>
+          </span>
+          <span id="pendingCount" class="count-badge amber">0</span>
+        </button>
+
+        <button id="approvedButton" class="home-card">
+          <span class="home-card-icon icon-approved">✓</span>
+          <span class="home-card-copy">
+            <strong>Approved</strong>
+            <small>Approved posts</small>
+          </span>
+          <span id="approvedCount" class="count-badge green">0</span>
+        </button>
+      </section>
+    </section>
+
+    <section id="editorView" class="view">
+      <header class="topbar">
+        <button class="icon-button back-button" data-back>‹</button>
+        <h1 id="editorTitle">New post</h1>
+        <button id="saveDraftButton" class="text-button">Save</button>
+      </header>
+
+      <div class="scroll-zone form-scroll">
+        <form id="postForm" class="editor-form">
+          <label class="field-group">
+            <span>Account</span>
+            <input id="accountInput" type="text" placeholder="SP Sweden" required autocomplete="off" />
+          </label>
+
+          <div class="field-group">
+            <span>Type</span>
+            <div class="segmented">
+              <button type="button" class="segment segment-active" data-type="post">Post</button>
+              <button type="button" class="segment" data-type="reel">Reel</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field-row">
+              <span id="mediaLabel">Preview images</span>
+              <small id="mediaHint">Max 3 images</small>
+            </div>
+
+            <div id="mediaGrid" class="media-grid"></div>
+
+            <label class="add-media-button">
+              <input id="mediaInput" type="file" accept="image/*" multiple hidden />
+              <span>＋ Add image</span>
+            </label>
+          </div>
+
+          <label id="totalImagesGroup" class="field-group">
+            <span>Total images in post</span>
+            <input id="totalImagesInput" type="number" min="1" max="99" inputmode="numeric" placeholder="20" />
+          </label>
+
+          <label class="field-group">
+            <span>Caption</span>
+            <textarea id="captionInput" rows="7" placeholder="Write caption..." required></textarea>
+          </label>
+
+          <label class="field-group">
+            <span>Note <em>optional</em></span>
+            <textarea id="noteInput" rows="3" placeholder="Short internal note..."></textarea>
+          </label>
+
+          <button id="sendForApprovalButton" type="submit" class="primary-action">
+            <span>Send for approval</span>
+            <span class="action-arrow">↗</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="pendingView" class="view">
+      <header class="topbar">
+        <button class="icon-button back-button" data-back>‹</button>
+        <div class="topbar-title-group">
+          <h1>Pending</h1>
+          <span id="pendingHeaderCount" class="mini-count">0</span>
+        </div>
+        <span class="topbar-spacer"></span>
+      </header>
+
+      <div id="pendingList" class="scroll-zone content-list"></div>
+    </section>
+
+    <section id="approvalView" class="view">
+      <header class="topbar approval-topbar">
+        <button class="icon-button back-button" data-back>‹</button>
+        <div class="approval-progress">
+          <span id="approvalProgress">PENDING 1 / 1</span>
+        </div>
+        <button id="approvalMoreButton" class="icon-button">•••</button>
+      </header>
+
+      <div class="scroll-zone approval-scroll">
+        <article class="approval-card">
+          <header class="preview-account-row">
+            <div class="account-avatar">SP</div>
+            <div>
+              <strong id="approvalAccount">SP Sweden</strong>
+              <small id="approvalMeta">Post · 20 images</small>
+            </div>
+          </header>
+
+          <div id="approvalMedia" class="approval-media"></div>
+
+          <div class="caption-panel">
+            <p id="approvalCaption"></p>
+            <button id="editCaptionButton" class="inline-link">Edit caption</button>
+          </div>
+
+          <div id="approvalNoteWrap" class="note-panel hidden">
+            <span>Internal note</span>
+            <p id="approvalNote"></p>
+          </div>
+
+          <div class="approval-actions">
+            <button id="requestEditButton" class="secondary-action">Edit</button>
+            <button id="approveButton" class="approve-action">✓ Approve</button>
+          </div>
+
+          <label class="comment-box">
+            <input id="commentInput" type="text" placeholder="Add a comment (optional)..." autocomplete="off" />
+            <button id="saveCommentButton" type="button">↗</button>
+          </label>
+
+          <div id="commentHistory" class="comment-history"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="approvedView" class="view">
+      <header class="topbar">
+        <button class="icon-button back-button" data-back>‹</button>
+        <div class="topbar-title-group">
+          <h1>Approved</h1>
+          <span id="approvedHeaderCount" class="mini-count green-mini">0</span>
+        </div>
+        <span class="topbar-spacer"></span>
+      </header>
+
+      <div class="approved-tabs">
+        <button class="approved-tab approved-tab-active" data-approved-tab="ready">Ready to post</button>
+        <button class="approved-tab" data-approved-tab="posted">Posted</button>
+      </div>
+
+      <div id="approvedList" class="scroll-zone content-list approved-list"></div>
+    </section>
+
+    <div id="sheetBackdrop" class="sheet-backdrop hidden"></div>
+
+    <section id="editSheet" class="bottom-sheet hidden" role="dialog" aria-modal="true">
+      <div class="sheet-handle"></div>
+      <header class="sheet-header">
+        <button class="text-button sheet-cancel">Cancel</button>
+        <h2>Edit caption</h2>
+        <button id="saveCaptionEditButton" class="text-button">Save</button>
+      </header>
+      <textarea id="captionEditInput" class="sheet-textarea" rows="9"></textarea>
+    </section>
+
+    <section id="statusSheet" class="bottom-sheet hidden" role="dialog" aria-modal="true">
+      <div class="sheet-handle"></div>
+      <header class="sheet-header">
+        <button class="text-button sheet-cancel">Close</button>
+        <h2>Post</h2>
+        <span></span>
+      </header>
+      <div class="sheet-menu">
+        <button id="convertToPendingButton">Move back to Pending</button>
+        <button id="deletePostButton" class="danger">Delete</button>
+      </div>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

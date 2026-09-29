@@ -1,0 +1,20 @@
+// Development-only example rules.
+// IMPORTANT: tighten these before using Wallee outside a trusted private workflow.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /approvalPosts/{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /approval-posts/{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
