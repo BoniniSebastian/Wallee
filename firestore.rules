@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /approvalPosts/{postId} {
+      allow read, create, update, delete: if signedIn();
+
+      match /media/{mediaId} {
+        allow read, create, update, delete: if signedIn();
+      }
+    }
+  }
+}
