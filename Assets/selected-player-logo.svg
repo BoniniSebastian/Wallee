@@ -1,1 +1,16 @@
-
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset=".5" stop-color="#cfd8ff"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity=".88"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="160" rx="28" fill="none"/>
+  <text x="320" y="92" text-anchor="middle" fill="url(#g)"
+        font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif"
+        font-size="54" font-weight="720" letter-spacing="7">SELECTED PLAYER</text>
+  <text x="320" y="124" text-anchor="middle" fill="#85858a"
+        font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif"
+        font-size="14" font-weight="600" letter-spacing="6">PLACEHOLDER LOGO</text>
+</svg>
