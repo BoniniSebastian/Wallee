@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function hasAppSession() {
+      return request.auth != null;
+    }
+
+    match /walleeItems/{itemId} {
+      allow read, create, update, delete: if hasAppSession();
+
+      match /media/{mediaId} {
+        allow read, create, update, delete: if hasAppSession();
+      }
+    }
+
+    match /walleeMeta/{metaId} {
+      allow read, create, update: if hasAppSession();
+      allow delete: if false;
+    }
+  }
+}
